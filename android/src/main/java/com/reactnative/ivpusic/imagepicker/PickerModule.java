@@ -352,22 +352,23 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
 
     private void initiatePicker(final Activity activity) {
         try {
-            final Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-
+            final Intent galleryIntent = new Intent();
             if (cropping || mediaType.equals("photo")) {
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
                 if (cropping) {
                     String[] mimetypes = {"image/jpeg", "image/png"};
                     galleryIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
                 }
             } else if (mediaType.equals("video")) {
+                galleryIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 galleryIntent.setType("video/*");
             } else {
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("*/*");
                 String[] mimetypes = {"image/*", "video/*"};
                 galleryIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
             }
-
             galleryIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, multiple);
             galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
